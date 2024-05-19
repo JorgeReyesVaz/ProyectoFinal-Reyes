@@ -1,0 +1,117 @@
+*{
+    margin: 0;
+    padding: 0;
+    
+}
+
+body{
+    background-image: url('./paneles\ solares.jpg');
+    background-size: cover;
+ 
+}
+
+section{
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+}
+
+h1,h2,h3,h4{
+    color: white;
+    text-align: center;
+}
+
+.texto{
+    background-color: rgba(0, 0, 0, 0.507);
+    flex-direction: center;
+}
+
+.cuerpoFin{
+    background-color: rgba(0, 0, 0, 0.507);
+    flex-direction: center;
+}
+
+.bottonFin{
+    text-decoration: none;
+    color: white;
+    background-color: gray;
+    width: 20%;
+    text-align: center;
+}
+
+.CostoRecibo{
+    width: 70%;
+}
+
+.button{
+    width: 20%;
+}
+
+.disable{
+    display: none;
+}
+
+.enable{
+    display:block;
+}
+
+.cuerpoFin{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.cuerpoFin h1{
+    width: 80%;
+}
+
+.cuerpoFin h4{
+    width: 80%;
+    text-align: center;
+}
+
+.cuerpoFin .mesesFin{
+    width: 30%;
+}
+
+.cuerpoFin .buttonFin{
+    width: 20%;
+}
+
+.buttonIngresar{
+    width: 20%;
+    height: 50px;
+    color: white;
+    background-color: gray;
+}
+
+.divTabla{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 50px;
+}
+
+table{
+    width: 60%;
+}
+
+table th {
+    background-color: rgb(24, 0, 133); 
+    color: white;
+    padding: 20px;
+}
+
+table tr{
+    padding: 20px;
+}
+
+table tr:nth-child(odd) {
+    background-color: rgb(173, 201, 255);
+    color: white;
+}
+
+table tr:nth-child(even) {
+    background-color: rgb(55, 125, 255);
+    color: white;
+}
+
