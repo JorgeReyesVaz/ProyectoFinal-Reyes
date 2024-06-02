@@ -1,0 +1,66 @@
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Calculadora de Paneles solares</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Hammersmith+One" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Josefin+Slab" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Butterfly+Kids&display=swap" rel="stylesheet">
+</head>
+<body id="body">
+    <section class="darkm">
+        <button id="darkmode" class="btn btn-dark darkmode"></button>
+    </section>
+    <section id="recibo">
+        <div class="input-group mb-3">
+            <h1 class="col-12">Ingresa tu ultimo pago de luz</h1>
+            <input id="CostoRecibo" class="CostoRecibo form-control " type="number" placeholder="Introduce costo de recibo" aria-describedby="basic-addon2">
+            <button id="button" class="btn btn-dark col-2">Ingresar</button>
+                
+              
+        </div>
+    </section>
+    <section class="enable" id="informacion">
+        <div class="texto">
+            <h2 id="ConsumoProm"></h2>
+            <h2 id="PanelesNecesarios"></h2>
+            <h2 id="CostoEstimadoEquipo"></h2>
+            <a onclick="mostrarFin()" class="disable  list-group-item list-group-item-action list-group-item-dark" id="bottonFin">Revisa tu financiamiento</a>
+        </div>
+    </section>
+
+    <section class="disable " id="financiamiento">
+        <div class="cuerpoFin">
+            <h1>Bienvenido a nuestro sistema de financiamiento</h1>
+            <br>
+            <h4>Por favor inserta la cantidad de meses que deseas financiar, <br> puedes elegir entre 12, 24, y 36 meses</h4>
+            <br>
+            <input id="mesesFin" class="CostoRecibo form-control mesesFin" type="number" placeholder="Introduce costo de recibo" aria-describedby="basic-addon2">
+            <button id="buttonFin" class="btn btn-dark">Ingresar</button>
+        </div>
+    </section>
+
+    <section class="disable " id="planFin">
+        <div class="planfin">
+            <h1 id="plantitulo"></h1>
+            <h2 id="anticipo"></h2>
+            <h2 id="mensualidad"></h2>
+        </div>
+        <div id="divTabla" class="divTabla">
+              
+        </div>
+        <button type="button" class="btn btn-dark" id="cerrarsesion">Cerrar Sesión</button>
+    </section>
+        
+    <script src="calculadora.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
+

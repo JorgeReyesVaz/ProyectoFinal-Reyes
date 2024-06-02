@@ -4,10 +4,24 @@
     
 }
 
+.bgform{
+    background-color: rgba(128, 128, 128, 0.601);
+    padding: 40px;
+    border-radius: 10%;
+}
+
 body{
     background-image: url('./paneles\ solares.jpg');
     background-size: cover;
- 
+
+}
+.darkm .dark-mode-toggle{
+    background-color: white;
+}
+.dark-mode{
+    background-color: black;
+    background-image: none;
+    background-size: cover;
 }
 
 section{
@@ -113,5 +127,17 @@ table tr:nth-child(odd) {
 table tr:nth-child(even) {
     background-color: rgb(55, 125, 255);
     color: white;
+}
+
+.darkm{
+    display: flex;
+    justify-content: right;
+}
+
+.darkm .darkmode{
+    width: 40px;
+    height: 40px;
+    margin-right: 20px;
+
 }
 
