@@ -1,4 +1,4 @@
-//Botones para cambio de pantalla entre registro e ingresar
+//Botones para cambio de pantalla entre registro e ingresart
 
 let btnIrRegistrar = document.getElementById("btnIrRegistrar")
 btnIrRegistrar.addEventListener("click",IrRegistrar)
@@ -27,7 +27,11 @@ btnRegistro.addEventListener("submit", (e)=>{
     const Usuarios = JSON.parse(localStorage.getItem("usuarios")) || []
     const estaRegistrado = Usuarios.find(usuario => usuario.correo === correo)
     if(estaRegistrado){
-        return alert("El usuario ya esta registrado")
+        return  Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "El usuario ya esta registrado"
+        })
     }
     Usuarios.push({usuario: usuario.toLowerCase(), correo: correo.toLowerCase(), contrasena:pass})
     localStorage.setItem("usuarios",JSON.stringify(Usuarios))
@@ -41,13 +45,21 @@ btnIngresar.addEventListener("submit", (e)=>{
     e.preventDefault()
     const correo = document.getElementById("InputEmail1").value 
     const pass = document.getElementById("InputPassword1").value 
-
     const Usuarios = JSON.parse(localStorage.getItem("usuarios")) || []
     const validarUsuario = Usuarios.find(usuario => usuario.correo === correo.toLowerCase() && usuario.contrasena === pass)
     if(!validarUsuario){
-       return alert("Usuario y/o contraseña incorrectos")
+       return Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Usuario y/o contraseña incorrectos"
+                });
     }
-    alert(`Bienvenido ${validarUsuario.usuario}`)
+        Swal.fire({
+        icon: "success",
+        title: "Usuario Correcto",
+        text: `Bienvenido ${validarUsuario.usuario}`
+        })
     sessionStorage.setItem("Acceso_Exitoso", JSON.stringify(validarUsuario))
     window.location.href = "calculadora.html"
 })
+

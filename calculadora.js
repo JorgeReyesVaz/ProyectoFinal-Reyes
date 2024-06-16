@@ -1,3 +1,4 @@
+
  //Validación de sesión iniciada para mostrar página
  const SesionIniciada = JSON.parse(sessionStorage.getItem("Acceso_Exitoso")) || false
  
@@ -6,7 +7,9 @@
     window.location.href = "index.html"
  }
  
- 
+//Constante 
+const host = 'api.frankfurter.app';
+var moneda ="MXN"
  //Variables
  let CostoRecibo = 0
  let ConsumoProm = 0
@@ -20,6 +23,7 @@
  let costPanel = 0
  let costTotal = 0
  let instalacion = 300
+
 
 //Paneles información 
 let Panel = function (nombre, capacidad, precio) {
@@ -59,22 +63,46 @@ let inversor9 = new  Inversor ("growatt", 10000, 89000)
 let inversor10 = new Inversor ("growatt", 15000, 113000)
 let listaInversor = [inversor1,inversor2,inversor3,inversor4,inversor5,inversor6,inversor7,inversor8,inversor9,inversor10]
 
-
-
- //Se va a obtener el valor del recibo del html
+//Se va a obtener el valor del recibo del html
     let button = document.getElementById("button")
     button.addEventListener("click",costoRecibo)
     function costoRecibo(){
-        let Recibo = document.getElementById("CostoRecibo").value
-        CostoRecibo = parseInt(Recibo)
-        let a = CostoRecibo * 0 
-        if (a != 0){
-            alert('Ese no es un número, por favor ungresa el costo de tu recibo')
-        }else {
-            
-            alert('Costo de recibo agregado')
-            calcularKw()
-        }
+        //Se agrega la fecha en la que se esta ingresando
+        const tiempo = moment().format('MMMM Do YYYY, h:mm:ss a')
+        const fecha = document.getElementById('texto-fecha')
+        fecha.textContent = tiempo
+        fecha.style.color = 'white'
+        fecha.style.padding = '10px'
+        //Se agrega el costo del recibo
+        const p = new Promise((res,rej)=>{
+            let Recibo = document.getElementById("CostoRecibo").value
+            CostoRecibo = parseInt(Recibo)
+            let a = CostoRecibo * 0 
+            if (a != 0){
+                res(Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Ese no es un número, por favor ungresa el costo de tu recibo",
+                  }))
+            }else {  
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Costo de recibo agregado",
+                    showConfirmButton: false,
+                    timer: 1500
+                  })
+                rej(Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Costo de recibo agregado",
+                    showConfirmButton: false,
+                    timer: 1500
+                  }))
+                calcularKw()
+            }
+        })
+
      }
     
      //Con ese valor lo comvertimos para guardarlo en CostoRecibo y llamamos a la funcion calcularKw
@@ -82,14 +110,19 @@ let listaInversor = [inversor1,inversor2,inversor3,inversor4,inversor5,inversor6
     function calcularKw(){
         ConsumoProm = CostoRecibo / KW
         ConsumoProm = Math.round(ConsumoProm)
-        document.getElementById('ConsumoProm').textContent = "Tienes un consumo promedio de: " +ConsumoProm +"Kw"
-        calcularPaneles()
+        
+        document.getElementById("filtrar-box").style.display = "block"
+        document.getElementById("recibo-box").style.display = "none"
     }
+
+    let button2 = document.getElementById("button2")
+    button2.addEventListener("click",calcularPaneles)
 
     //Ya tenemos el consumo del cliente, ahora debemos seleccionar que panel solar quiere
 
      function calcularPaneles(){
-        let filtrar = prompt("Ingresa la capacidad deseada de tus paneles solares, pueden ser de 500w, 510w, 550, 560w, 580w o 590w").trim()
+        
+        let filtrar = document.getElementById("filtrar").value
         let resultado = listaPanel.filter( (x)=>x.capacidad.includes(filtrar))
         
         if (resultado.length> 0 ){
@@ -104,10 +137,18 @@ let listaInversor = [inversor1,inversor2,inversor3,inversor4,inversor5,inversor6
                 capPanel = resultado2[0].capacidad
                 costPanel = resultado2[0].precio
             }else{
-                alert("Por favor selecciona un nombre correcto")
+                    Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Por favor selecciona un nombre correcto"
+                })
             }
         }else{
-            alert("Por favor selecciona una capacidad correcta")
+                Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Por favor selecciona una capacidad correcta"
+            })
             return
         }
 
@@ -117,8 +158,6 @@ let listaInversor = [inversor1,inversor2,inversor3,inversor4,inversor5,inversor6
         PanelesNecesarios = Math.round(PanelesNecesarios)
         CostoEstimadoEquipo = PanelesNecesarios * costPanel
         CostoEstimadoEquipo = Math.round(CostoEstimadoEquipo)
-        
-        document.getElementById('PanelesNecesarios').textContent = "Necesitarías un total de: " +PanelesNecesarios +"Paneles Solares de " +capPanel +"W"
 
         let invness = PanelesNecesarios * capPanel
         let filtrarInv = listaInversor.filter((x)=> x.capacidad == invness || x.capacidad > invness)
@@ -136,15 +175,54 @@ let listaInversor = [inversor1,inversor2,inversor3,inversor4,inversor5,inversor6
                 instalacion = PanelesNecesarios * instalacion
                 costTotal = costInv2 + CostoEstimadoEquipo + instalacion
             }else{
-                alert("Costo de recibo muy elevado, se necesita realizar una cotización a la medida, por favor contactanos")
+                Swal.fire({
+                    title: "Costo de recibo muy elevado",
+                    text: "se necesita realizar una cotización a la medida, por favor contactanos"
+                  });
                 return
             }
             
         }
-        
-        document.getElementById('CostoEstimadoEquipo').textContent = "Tiene un costo estimado de " +costTotal +"mnx"
-        document.getElementById('bottonFin').style.display = "block"
 
+        document.getElementById("moneda").style.display="block"
+        
+
+    }
+
+    let mnx = document.getElementById("mnx")
+    mnx.addEventListener("click",pesos)
+    let usd = document.getElementById("usd")
+    usd.addEventListener("click",dolares)
+    function pesos(){
+        document.getElementById('ConsumoProm').textContent = "Tienes un consumo promedio de: " +ConsumoProm +"Kw"
+        document.getElementById('PanelesNecesarios').textContent = "Necesitarías un total de: " +PanelesNecesarios +"Paneles Solares de " +capPanel +"W"
+        document.getElementById('CostoEstimadoEquipo').textContent = "Tiene un costo estimado de $" +costTotal +" MXN"
+        document.getElementById('bottonFin').style.display = "block"    
+        moneda="MXN"
+    }
+    let costTotalUSD
+    function dolares(){
+        // let costocambiante = costTotal
+        if(moneda != "USD"){
+            costocambiante = 0
+            fetch(`https://${host}/latest?amount=1&from=MXN&to=USD`)
+              .then(resp => resp.json())
+              .then((data) => {
+                let usd=data.rates.USD
+                console.log(costTotal);
+                costTotalUSD = costTotal * usd
+                document.getElementById('ConsumoProm').textContent = "Tienes un consumo promedio de: " +ConsumoProm +"Kw"
+                document.getElementById('PanelesNecesarios').textContent = "Necesitarías un total de: " +PanelesNecesarios +"Paneles Solares de " +capPanel +"W"
+                document.getElementById('CostoEstimadoEquipo').textContent = "Tiene un costo estimado de $" +costTotalUSD +" USD"
+                document.getElementById('bottonFin').style.display = "block"
+              });
+              moneda="USD"
+              
+        }
+        document.getElementById('ConsumoProm').textContent = "Tienes un consumo promedio de: " +ConsumoProm +"Kw"
+        document.getElementById('PanelesNecesarios').textContent = "Necesitarías un total de: " +PanelesNecesarios +"Paneles Solares de " +capPanel +"W"
+        document.getElementById('CostoEstimadoEquipo').textContent = "Tiene un costo estimado de $" +costTotalUSD +" USD"
+        document.getElementById('bottonFin').style.display = "block"
     }
     
     function mostrarFin() {
@@ -159,6 +237,9 @@ let listaInversor = [inversor1,inversor2,inversor3,inversor4,inversor5,inversor6
     let buttonFin = document.getElementById("buttonFin")
     buttonFin.addEventListener("click", financiamiento)
     function financiamiento(){
+       
+        let costTotalMoneda = moneda != "MXN" ? costTotalUSD : costTotal
+        
         document.getElementById("divTabla").innerHTML="";
         let costoTotal = 0
         interes = 0
@@ -168,7 +249,7 @@ let listaInversor = [inversor1,inversor2,inversor3,inversor4,inversor5,inversor6
             interes = interes * meses
             interes = 1 + interes
             console.log(interes);
-            costoTotal = costTotal * interes
+            costoTotal = costTotalMoneda * interes
             costoTotal = Math.round(costoTotal)
             console.log(costoTotal);
             let anticipo = .2
@@ -177,8 +258,8 @@ let listaInversor = [inversor1,inversor2,inversor3,inversor4,inversor5,inversor6
             let restanteMeses = (costoTotal - anticipo)/meses
             restanteMeses = Math.round(restanteMeses)
             document.getElementById('plantitulo').textContent = "Tu plan de financiaiento a " +meses +" meses"
-            document.getElementById('anticipo').textContent = "Pagarías un anticipo de " +anticipo +" mnx"
-            document.getElementById('mensualidad').textContent = "Un pago mensual de " +restanteMeses +"mnx"
+            document.getElementById('anticipo').textContent = "Pagarías un anticipo de $" +anticipo +" "+moneda
+            document.getElementById('mensualidad').textContent = "Un pago mensual de $" +restanteMeses +" "+moneda
                         
             const contenedor = document.getElementById("divTabla")
             const tabla = document.createElement("table")
@@ -221,7 +302,7 @@ let listaInversor = [inversor1,inversor2,inversor3,inversor4,inversor5,inversor6
             interes = interes * meses
             interes = 1 + interes
             console.log(interes);
-            let costoTotal = costTotal * interes
+            let costoTotal = costTotalMoneda * interes
             costoTotal = Math.round(costoTotal)
             console.log(costoTotal);
             let anticipo = .2
@@ -230,8 +311,8 @@ let listaInversor = [inversor1,inversor2,inversor3,inversor4,inversor5,inversor6
             let restanteMeses = (costoTotal - anticipo)/meses
             restanteMeses = Math.round(restanteMeses)
             document.getElementById('plantitulo').textContent = "Tu plan de financiaiento a " +meses +" meses"
-            document.getElementById('anticipo').textContent = "Pagarías un anticipo de " +anticipo +" mnx"
-            document.getElementById('mensualidad').textContent = "Un pago mensual de " +restanteMeses +"mnx"
+            document.getElementById('anticipo').textContent = "Pagarías un anticipo de $" +anticipo +" "+moneda
+            document.getElementById('mensualidad').textContent = "Un pago mensual de $" +restanteMeses +" "+moneda
                         
             const contenedor = document.getElementById("divTabla")
             const tabla = document.createElement("table")
@@ -274,7 +355,7 @@ let listaInversor = [inversor1,inversor2,inversor3,inversor4,inversor5,inversor6
             interes = interes * meses
             interes = 1 + interes
             console.log(interes);
-            let costoTotal = costTotal * interes
+            let costoTotal = costTotalMoneda * interes
             costoTotal = Math.round(costoTotal)
             console.log(costoTotal);
             let anticipo = .2
@@ -283,8 +364,8 @@ let listaInversor = [inversor1,inversor2,inversor3,inversor4,inversor5,inversor6
             let restanteMeses = (costoTotal - anticipo)/meses
             restanteMeses = Math.round(restanteMeses)
             document.getElementById('plantitulo').textContent = "Tu plan de financiaiento a " +meses +" meses"
-            document.getElementById('anticipo').textContent = "Pagarías un anticipo de " +anticipo +" mnx"
-            document.getElementById('mensualidad').textContent = "Un pago mensual de " +restanteMeses +"mnx"
+            document.getElementById('anticipo').textContent = "Pagarías un anticipo de $" +anticipo +" "+moneda
+            document.getElementById('mensualidad').textContent = "Un pago mensual de $" +restanteMeses +" "+moneda
                         
             const contenedor = document.getElementById("divTabla")
             const tabla = document.createElement("table")
@@ -323,17 +404,34 @@ let listaInversor = [inversor1,inversor2,inversor3,inversor4,inversor5,inversor6
                 tabla.appendChild(tbody);                    
             contenedor.appendChild(tabla);
         }else{
-            alert("Por favor ingresa un financiamiento valido, puede ser 12, 24 o 36 meses")
+            Swal.fire("Por favor ingresa un financiamiento valido, puede ser 12, 24 o 36 meses")
         }
     }
 
-    //IR a la tienda de productos
+    //Cerrar sesión
     let cerrarsesion = document.getElementById("cerrarsesion")
     cerrarsesion.addEventListener("click",CerrarSesion)
 
     function CerrarSesion() {
-        sessionStorage.clear()
-        window.location.href = "index.html"
+        Swal.fire({
+            title: "¿Estas seguro que quieres salir?",
+            text: "Perderas los datos de financiamiento",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si, salir!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Swal.fire({
+                title: "Cerrando Sesión",
+                text: "Nos vemos pronto",
+                icon: "success"
+              });
+              sessionStorage.clear()
+              window.location.href = "index.html"
+            }
+          });
     }
     
     //Dark mode 

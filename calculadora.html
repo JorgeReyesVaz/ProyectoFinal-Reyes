@@ -15,19 +15,27 @@
     <link href="https://fonts.googleapis.com/css2?family=Butterfly+Kids&display=swap" rel="stylesheet">
 </head>
 <body id="body">
+    <div id="fecha"><p id="texto-fecha"></p></div>
     <section class="darkm">
         <button id="darkmode" class="btn btn-dark darkmode"></button>
     </section>
     <section id="recibo">
-        <div class="input-group mb-3">
+        <div class="input-group mb-3 w-12" id="recibo-box">
             <h1 class="col-12">Ingresa tu ultimo pago de luz</h1>
             <input id="CostoRecibo" class="CostoRecibo form-control " type="number" placeholder="Introduce costo de recibo" aria-describedby="basic-addon2">
-            <button id="button" class="btn btn-dark col-2">Ingresar</button>
-                
-              
+            <button id="button" class="btn btn-dark col-2">Ingresar</button>     
+        </div>
+        <div class="input-group2 mb-3 disable" id="filtrar-box">
+            <h3 class="col-12">Ingresa la capacidad deseada de tus paneles solares, pueden ser de 500w, 510w, 550, 560w, 580w o 590w</h3>
+            <input id="filtrar" class="filtrar form-control " type="number" placeholder="Introduce la capacidad de tus módulos" aria-describedby="basic-addon2">
+            <button id="button2" class="btn btn-dark col-2">Ingresar</button>  
         </div>
     </section>
     <section class="enable" id="informacion">
+        <div class="disable" id="moneda">
+            <button id="mnx" class="btn btn-dark col-2">MNX</button>  
+            <button id="usd" class="btn btn-dark col-2">USD</button>  
+        </div>
         <div class="texto">
             <h2 id="ConsumoProm"></h2>
             <h2 id="PanelesNecesarios"></h2>
@@ -60,6 +68,8 @@
     </section>
         
     <script src="calculadora.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
